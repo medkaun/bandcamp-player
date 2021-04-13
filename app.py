@@ -1,11 +1,10 @@
 import tkinter as tkr #used to develop GUI
-# from tkinter.filedialog import askdirectory #it permit to select dir
-import os #it permits to interact with the operating system
 from tkinter.simpledialog import askstring
 from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.options import Options
 import random
+import time
 
 option = Options()
 option.add_argument("--headless")
@@ -45,6 +44,7 @@ def play():
     if str(driver.current_url) != str(song_list[play_list.get(tkr.ACTIVE)]):
         link = song_list[play_list.get(tkr.ACTIVE)]
         driver.get(link)
+        time.sleep(1)
     driver.find_element_by_class_name('playbutton').click()
     Button1.configure(state='disabled')
     Button2.configure(state='normal')
@@ -53,6 +53,8 @@ def pause():
     Button1.configure(state='normal')
     Button2.configure(state='disabled')
 def next():
+    if Button2['state'] == tkr.NORMAL:
+        pause()
     selected_song = play_list.curselection()
     next_song = 0
     if len(selected_song) > 0:
